@@ -584,7 +584,6 @@ module.exports = grammar({
       field('args', optional($.enum_arg)),
     ),
     enum_param: $ => seq(
-      optional('inline'),
       field('type', $.type),
       field('name', $.ident),
     ),
@@ -592,7 +591,8 @@ module.exports = grammar({
     enum_spec: $ => prec.right(seq(
       ':',
       choice(
-        seq(optional('inline'), field('type', alias($._type_no_generics, $.type)), optional($.enum_param_list)),
+        seq(field('type', alias($._type_no_generics, $.type)), optional($.enum_param_list)),
+        seq('const', optional('inline'), field('type', alias($._type_no_generics, $.type))),
         $.enum_param_list,
       ),
     )),
